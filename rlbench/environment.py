@@ -5,6 +5,7 @@ from typing import Type, List
 from pyrep import PyRep
 from pyrep.objects import VisionSensor
 from pyrep.robots.arms.panda import Panda
+from pyrep.const import Verbosity
 
 from rlbench import utils
 from rlbench.action_modes.action_mode import ActionMode
@@ -188,6 +189,8 @@ class Environment(object):
             right_shoulder_camera=_get_cam_info(
                 self._scene._cam_over_shoulder_right),
             front_camera=_get_cam_info(self._scene._cam_front),
+            front_left_camera=_get_cam_info(self._scene._cam_front_left),
+            front_right_camera=_get_cam_info(self._scene._cam_front_right),
             wrist_camera=_get_cam_info(self._scene._cam_wrist),
             overhead_camera=_get_cam_info(self._scene._cam_overhead)
         )

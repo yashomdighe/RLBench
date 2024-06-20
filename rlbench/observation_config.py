@@ -39,6 +39,8 @@ class ObservationConfig(object):
                  overhead_camera: CameraConfig = None,
                  wrist_camera: CameraConfig = None,
                  front_camera: CameraConfig = None,
+                 front_left_camera: CameraConfig = None,
+                 front_right_camera: CameraConfig = None,
                  joint_velocities=True,
                  joint_velocities_noise: NoiseModel=Identity(),
                  joint_positions=True,
@@ -69,6 +71,13 @@ class ObservationConfig(object):
         self.front_camera = (
             CameraConfig() if front_camera is None
             else front_camera)
+        self.front_left_camera = (
+            CameraConfig() if front_left_camera is None
+            else front_left_camera)
+        self.front_right_camera = (
+            CameraConfig() if front_right_camera is None
+            else front_right_camera)
+        
         self.joint_velocities = joint_velocities
         self.joint_velocities_noise = joint_velocities_noise
         self.joint_positions = joint_positions
@@ -94,6 +103,8 @@ class ObservationConfig(object):
         self.overhead_camera.set_all(value)
         self.wrist_camera.set_all(value)
         self.front_camera.set_all(value)
+        self.front_left_camera.set_all(value)
+        self.front_right_camera.set_all(value)
 
     def set_all_low_dim(self, value: bool):
         self.joint_velocities = value

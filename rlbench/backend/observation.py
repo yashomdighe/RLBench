@@ -25,6 +25,14 @@ class Observation(object):
                  front_depth: np.ndarray,
                  front_mask: np.ndarray,
                  front_point_cloud: np.ndarray,
+                 front_left_rgb: np.ndarray,
+                 front_left_depth: np.ndarray,
+                 front_left_mask: np.ndarray,
+                 front_left_point_cloud: np.ndarray,
+                 front_right_rgb: np.ndarray,
+                 front_right_depth: np.ndarray,
+                 front_right_mask: np.ndarray,
+                 front_right_point_cloud: np.ndarray,
                  joint_velocities: np.ndarray,
                  joint_positions: np.ndarray,
                  joint_forces: np.ndarray,
@@ -55,6 +63,14 @@ class Observation(object):
         self.front_depth = front_depth
         self.front_mask = front_mask
         self.front_point_cloud = front_point_cloud
+        self.front_left_rgb=front_left_rgb
+        self.front_left_depth=front_left_depth
+        self.front_left_mask = front_left_mask
+        self.front_left_point_cloud=front_left_point_cloud
+        self.front_right_rgb=front_right_rgb
+        self.front_right_depth=front_right_depth
+        self.front_right_mask = front_right_mask
+        self.front_right_point_cloud=front_right_point_cloud
         self.joint_velocities = joint_velocities
         self.joint_positions = joint_positions
         self.joint_forces = joint_forces

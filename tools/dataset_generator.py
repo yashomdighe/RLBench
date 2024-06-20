@@ -72,6 +72,12 @@ def save_demo(demo, example_path):
     front_rgb_path = os.path.join(example_path, FRONT_RGB_FOLDER)
     front_depth_path = os.path.join(example_path, FRONT_DEPTH_FOLDER)
     front_mask_path = os.path.join(example_path, FRONT_MASK_FOLDER)
+    front_left_rgb_path = os.path.join(example_path, FRONT_LEFT_RGB_FOLDER)
+    front_left_depth_path = os.path.join(example_path, FRONT_LEFT_DEPTH_FOLDER)
+    front_left_mask_path = os.path.join(example_path, FRONT_LEFT_MASK_FOLDER)
+    front_right_rgb_path = os.path.join(example_path, FRONT_RIGHT_RGB_FOLDER)
+    front_right_depth_path = os.path.join(example_path, FRONT_RIGHT_DEPTH_FOLDER)
+    front_right_mask_path = os.path.join(example_path, FRONT_RIGHT_MASK_FOLDER)
 
     check_and_make(left_shoulder_rgb_path)
     check_and_make(left_shoulder_depth_path)
@@ -88,6 +94,12 @@ def save_demo(demo, example_path):
     check_and_make(front_rgb_path)
     check_and_make(front_depth_path)
     check_and_make(front_mask_path)
+    check_and_make(front_left_rgb_path)
+    check_and_make(front_left_depth_path)
+    check_and_make(front_left_mask_path)
+    check_and_make(front_right_rgb_path)
+    check_and_make(front_right_depth_path)
+    check_and_make(front_right_mask_path)
 
     for i, obs in enumerate(demo):
         left_shoulder_rgb = Image.fromarray(obs.left_shoulder_rgb)
@@ -113,6 +125,14 @@ def save_demo(demo, example_path):
         front_depth = utils.float_array_to_rgb_image(
             obs.front_depth, scale_factor=DEPTH_SCALE)
         front_mask = Image.fromarray((obs.front_mask * 255).astype(np.uint8))
+        front_left_rgb = Image.fromarray(obs.front_left_rgb)
+        front_left_depth = utils.float_array_to_rgb_image(
+            obs.front_left_depth, scale_factor=DEPTH_SCALE)
+        front_left_mask = Image.fromarray((obs.front_left_mask * 255).astype(np.uint8))
+        front_right_rgb = Image.fromarray(obs.front_right_rgb)
+        front_right_depth = utils.float_array_to_rgb_image(
+            obs.front_right_depth, scale_factor=DEPTH_SCALE)
+        front_right_mask = Image.fromarray((obs.front_right_mask * 255).astype(np.uint8))
 
         left_shoulder_rgb.save(
             os.path.join(left_shoulder_rgb_path, IMAGE_FORMAT % i))
@@ -138,6 +158,12 @@ def save_demo(demo, example_path):
         front_rgb.save(os.path.join(front_rgb_path, IMAGE_FORMAT % i))
         front_depth.save(os.path.join(front_depth_path, IMAGE_FORMAT % i))
         front_mask.save(os.path.join(front_mask_path, IMAGE_FORMAT % i))
+        front_left_rgb.save(os.path.join(front_left_rgb_path, IMAGE_FORMAT % i))
+        front_left_depth.save(os.path.join(front_left_depth_path, IMAGE_FORMAT % i))
+        front_left_mask.save(os.path.join(front_left_mask_path, IMAGE_FORMAT % i))
+        front_right_rgb.save(os.path.join(front_right_rgb_path, IMAGE_FORMAT % i))
+        front_right_depth.save(os.path.join(front_right_depth_path, IMAGE_FORMAT % i))
+        front_right_mask.save(os.path.join(front_right_mask_path, IMAGE_FORMAT % i))
 
         # We save the images separately, so set these to None for pickling.
         obs.left_shoulder_rgb = None
@@ -160,6 +186,14 @@ def save_demo(demo, example_path):
         obs.front_depth = None
         obs.front_point_cloud = None
         obs.front_mask = None
+        obs.front_left_rgb = None
+        obs.front_left_depth = None
+        obs.front_left_point_cloud = None
+        obs.front_left_mask = None
+        obs.front_right_rgb = None
+        obs.front_right_depth = None
+        obs.front_right_point_cloud = None
+        obs.front_right_mask = None
 
     # Save the low-dimension data
     with open(os.path.join(example_path, LOW_DIM_PICKLE), 'wb') as f:
@@ -183,6 +217,8 @@ def run(i, lock, task_index, variation_count, results, file_lock, tasks):
     obs_config.overhead_camera.image_size = img_size
     obs_config.wrist_camera.image_size = img_size
     obs_config.front_camera.image_size = img_size
+    obs_config.front_left_camera.image_size = img_size
+    obs_config.front_right_camera.image_size = img_size
 
     # Store depth as 0 - 1
     obs_config.right_shoulder_camera.depth_in_meters = False
@@ -190,6 +226,8 @@ def run(i, lock, task_index, variation_count, results, file_lock, tasks):
     obs_config.overhead_camera.depth_in_meters = False
     obs_config.wrist_camera.depth_in_meters = False
     obs_config.front_camera.depth_in_meters = False
+    obs_config.front_left_camera.depth_in_meters = False
+    obs_config.front_right_camera.depth_in_meters = False
 
     # We want to save the masks as rgb encodings.
     obs_config.left_shoulder_camera.masks_as_one_channel = False
@@ -197,6 +235,8 @@ def run(i, lock, task_index, variation_count, results, file_lock, tasks):
     obs_config.overhead_camera.masks_as_one_channel = False
     obs_config.wrist_camera.masks_as_one_channel = False
     obs_config.front_camera.masks_as_one_channel = False
+    obs_config.front_left_camera.masks_as_one_channel = False
+    obs_config.front_right_camera.masks_as_one_channel = False
 
     if FLAGS.renderer == 'opengl':
         obs_config.right_shoulder_camera.render_mode = RenderMode.OPENGL
@@ -204,12 +244,16 @@ def run(i, lock, task_index, variation_count, results, file_lock, tasks):
         obs_config.overhead_camera.render_mode = RenderMode.OPENGL
         obs_config.wrist_camera.render_mode = RenderMode.OPENGL
         obs_config.front_camera.render_mode = RenderMode.OPENGL
+        obs_config.front_left_camera.render_mode = RenderMode.OPENGL
+        obs_config.front_right_camera.render_mode = RenderMode.OPENGL
     elif FLAGS.renderer == 'opengl3':
         obs_config.right_shoulder_camera.render_mode = RenderMode.OPENGL3
         obs_config.left_shoulder_camera.render_mode = RenderMode.OPENGL3
         obs_config.overhead_camera.render_mode = RenderMode.OPENGL3
         obs_config.wrist_camera.render_mode = RenderMode.OPENGL3
         obs_config.front_camera.render_mode = RenderMode.OPENGL3
+        obs_config.front_left_camera.render_mode = RenderMode.OPENGL3
+        obs_config.front_right_camera.render_mode = RenderMode.OPENGL3
 
     rlbench_env = Environment(
         action_mode=MoveArmThenGripper(JointVelocity(), Discrete()),

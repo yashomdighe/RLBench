@@ -1,3 +1,9 @@
+# Changes from the original 
+- More Cameras: I have added a front right and front left camera 
+- Change positions of cameras: I have tweaked the position and orientaion of all the cameras to better capture the space for my use case
+Everything else is the same. 
+
+**All the content below is from the readme of the original**
 # RLBench: Robot Learning Benchmark [![Unit Tests](https://github.com/stepjam/RLBench/workflows/Unit%20Tests/badge.svg)](https://github.com/stepjam/RLBench/actions) [![Task Tests](https://github.com/stepjam/RLBench/workflows/Task%20Tests/badge.svg)](https://github.com/stepjam/RLBench/actions) [![Discord](https://img.shields.io/discord/694945190867370155.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/DXPCjmd)
 
 ![task grid image missing](readme_files/task_grid.png)

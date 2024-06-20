@@ -285,6 +285,8 @@ if __name__ == '__main__':
     obs_config.overhead_camera = cam_config
     obs_config.wrist_camera = cam_config
     obs_config.front_camera = cam_config
+    obs_config.front_left_camera = cam_config
+    obs_config.front_right_camera = cam_config
 
     scene = Scene(pr, robot, obs_config)
     loaded_task = LoadedTask(pr, scene, robot)
